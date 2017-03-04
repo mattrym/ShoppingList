@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ShoppingList</string>
+    <string name="action_settings">Settings</string>
+    <string name="units_label">UNITS</string>
+    <string name="quantity_label">QUANTITY</string>
+    <string name="product_label">PRODUCT NAME</string>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <LinearLayout style="@style/AppTheme.ProductActivity.LinearLayoutTheme"
+        android:orientation="vertical">
+        <TextView style="@style/AppTheme.ProductActivity.LabelTheme"
+            android:id="@+id/tv_name_label"
+            android:text="@string/product_label"
+            android:layout_width="match_parent"
+            android:layout_weight="3"/>
+        <EditText style="@style/AppTheme.ProductActivity.LabelTheme"
+            android:id="@+id/et_product_name"
+            android:layout_width="match_parent"
+            android:layout_weight="7"/>
+    </LinearLayout>
+    <LinearLayout style="@style/AppTheme.ProductActivity.LinearLayoutTheme">
+        <TextView style="@style/AppTheme.ProductActivity.LabelTheme"
+            android:id="@+id/tv_quantity_label"
+            android:layout_weight="3"
+            android:text="@string/quantity_label"/>
+        <EditText style="@style/AppTheme.ProductActivity.LabelTheme"
+            android:id="@+id/et_product_quantity"
+            android:layout_weight="7"/>
+    </LinearLayout>
+    <LinearLayout style="@style/AppTheme.ProductActivity.LinearLayoutTheme">
+        <TextView style="@style/AppTheme.ProductActivity.LabelTheme"
+            android:id="@+id/tv_units_label"
+            android:layout_weight="3"
+            android:text="@string/units_label"/>
+        <EditText style="@style/AppTheme.ProductActivity.LabelTheme"
+            android:id="@+id/et_product_units"
+            android:layout_weight="7" />
+    </LinearLayout>
+    <Space style="@style/AppTheme.ProductActivity.LabelTheme"
+        android:layout_width="match_parent"
+        android:layout_weight="1"/>
+    <LinearLayout style="@style/AppTheme.ProductActivity.LinearLayoutTheme">
+        <Button style="@style/AppTheme.ProductActivity.LabelTheme"
+            android:id="@+id/product_save_button"
+            android:layout_width="match_parent"
+            android:text="ASDFASDF">
+
+        </Button>
+    </LinearLayout>
+</LinearLayout>

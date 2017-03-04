@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/mateusz/Projects/ShoppingList/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2292119410763b59725a0660158c75e7ea006faa">
+        <dex dex="/home/mateusz/Projects/ShoppingList/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_f6f84ba82a27fdaaa7106cfa16e75a7bb678de17/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/mateusz/Projects/ShoppingList/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/home/mateusz/Projects/ShoppingList/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_bdb3b101ca1530387fcd782c5ad8183b7a2f733a/classes.dex" />
+    </item>
+
+</items>
