@@ -40,10 +40,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         dbCursor.moveToPosition(position);
 
+        long productId = dbCursor.getLong(dbCursor.getColumnIndex(ProductContract.ProductEntry._ID));
         String productName = dbCursor.getString(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME));
         double productQuantity = dbCursor.getDouble(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY));
         String productUnits = dbCursor.getString(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS));
 
+        holder.itemView.setTag(productId);
         holder.productNameTextView.setText(productName);
         holder.productQuantityTextView.setText(String.valueOf(productQuantity));
         holder.productUnitsTextView.setText(productUnits);

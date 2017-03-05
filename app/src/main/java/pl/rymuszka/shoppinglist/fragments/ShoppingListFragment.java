@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import pl.rymuszka.shoppinglist.R;
 import pl.rymuszka.shoppinglist.database.ProductContract;
 import pl.rymuszka.shoppinglist.database.ProductDBHelper;
+import pl.rymuszka.shoppinglist.database.ProductDatabase;
 import pl.rymuszka.shoppinglist.database.ProductTestUtility;
 
 /**
@@ -20,9 +22,10 @@ import pl.rymuszka.shoppinglist.database.ProductTestUtility;
  */
 public class ShoppingListFragment extends Fragment {
 
+    private Cursor allProductsCursor;
     private RecyclerView productList;
     private ShoppingListAdapter productAdapter;
-    private SQLiteDatabase productDatabase;
+    private ProductDatabase productDatabase;
 
     public ShoppingListFragment() {
     }
@@ -34,43 +37,45 @@ public class ShoppingListFragment extends Fragment {
 
         productList = (RecyclerView) view.findViewById(R.id.rv_product_list);
         productList.setLayoutManager(new LinearLayoutManager(getContext()));
-        productList.setHasFixedSize(true);
+        productList.setHasFixedSize(false);
 
-//
-//        if(productDatabase != null) {
-//            attachProductAdapter();
-//        }
+        productDatabase = ProductDatabase.getInstance(getContext());
 
-        productDatabase = new ProductDBHelper(getContext()).getWritableDatabase();
-        ProductTestUtility.insertSampleData(productDatabase);
-
-        productAdapter = new ShoppingListAdapter(getContext(), selectAllProductsFromDatabase());
-        productList.setAdapter(productAdapter);
+        attachProductAdapter();
+        attachItemTouchHelper();
 
         return view;
     }
 
-    public void attachSQLiteDatabase(SQLiteDatabase database) {
-        productDatabase = database;
-
-        if(productList != null) {
-            attachProductAdapter();
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        attachProductAdapter();
     }
 
     private void attachProductAdapter() {
-        productAdapter = new ShoppingListAdapter(getActivity(), selectAllProductsFromDatabase());
+        if(allProductsCursor != null) {
+            allProductsCursor.close();
+        }
+
+        allProductsCursor = productDatabase.selectAllProductsFromDatabase();
+        productAdapter = new ShoppingListAdapter(getActivity(), allProductsCursor);
         productList.setAdapter(productAdapter);
     }
 
-    private Cursor selectAllProductsFromDatabase() {
-        //productDatabase.execSQL("DROP DATABASE " + ProductDbHelper.DATABASE_NAME);
-        return productDatabase.query(ProductContract.ProductEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                ProductContract.ProductEntry.COLUMN_TIMESTAMP);
+    private void attachItemTouchHelper() {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                long id = (long) viewHolder.itemView.getTag();
+                ProductDatabase.getInstance(getContext()).removeProduct(id);
+                attachProductAdapter();
+            }
+        }).attachToRecyclerView(productList);
     }
 }
