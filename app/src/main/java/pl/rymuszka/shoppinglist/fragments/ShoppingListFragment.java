@@ -1,7 +1,7 @@
 package pl.rymuszka.shoppinglist.fragments;
 
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pl.rymuszka.shoppinglist.R;
-import pl.rymuszka.shoppinglist.database.ProductContract;
-import pl.rymuszka.shoppinglist.database.ProductDBHelper;
+import pl.rymuszka.shoppinglist.activities.ProductActivity;
 import pl.rymuszka.shoppinglist.database.ProductDatabase;
-import pl.rymuszka.shoppinglist.database.ProductTestUtility;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ShoppingListFragment extends Fragment {
+public class ShoppingListFragment extends Fragment implements ShoppingListAdapter.ProductItemOnClickHandler {
 
     private Cursor allProductsCursor;
     private RecyclerView productList;
@@ -60,6 +58,7 @@ public class ShoppingListFragment extends Fragment {
 
         allProductsCursor = productDatabase.selectAllProductsFromDatabase();
         productAdapter = new ShoppingListAdapter(getActivity(), allProductsCursor);
+        productAdapter.setOnClickHandler(this);
         productList.setAdapter(productAdapter);
     }
 
@@ -77,5 +76,12 @@ public class ShoppingListFragment extends Fragment {
                 attachProductAdapter();
             }
         }).attachToRecyclerView(productList);
+    }
+
+    @Override
+    public void onClick(Bundle bundle) {
+        Intent intent = new Intent(getContext(), ProductActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

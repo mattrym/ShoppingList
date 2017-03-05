@@ -42,6 +42,6 @@
             android:id="@+id/product_save_button"
             android:layout_width="match_parent"
             android:text="@string/save_product_button"
-            android:onClick="addNewGuest"/>
+            android:onClick="saveProductInfo"/>
     </LinearLayout>
 </LinearLayout>
