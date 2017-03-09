@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pref_font_size_labels">
+        <item>@string/pref_font_size_small_label</item>
+        <item>@string/pref_font_size_medium_label</item>
+        <item>@string/pref_font_size_large_label</item>
+        <item>@string/pref_font_size_very_large_label</item>
+    </array>
+    <array name="pref_font_size_values">
+        <item>@string/pref_font_size_small_value</item>
+        <item>@string/pref_font_size_medium_value</item>
+        <item>@string/pref_font_size_large_value</item>
+        <item>@string/pref_font_size_very_large_value</item>
+    </array>
+    <array name="pref_font_color_labels">
+        <item>@string/pref_font_color_red_label</item>
+        <item>@string/pref_font_color_green_label</item>
+        <item>@string/pref_font_color_blue_label</item>
+    </array>
+    <array name="pref_font_color_values">
+        <item>@string/pref_font_color_red_value</item>
+        <item>@string/pref_font_color_green_value</item>
+        <item>@string/pref_font_color_blue_value</item>
+    </array>
+</resources>

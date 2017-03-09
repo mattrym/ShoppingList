@@ -5,4 +5,11 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="splash_background">#888888</color>
+
+    <!-- Font colors available from settings -->
+    <color name="font_color_default">@color/font_color_blue</color>
+    <color name="font_color_red">#FF0000</color>
+    <color name="font_color_green">#00FF00</color>
+    <color name="font_color_blue">#0000FF</color>
+
 </resources>

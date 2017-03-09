@@ -1,9 +1,11 @@
 package pl.rymuszka.shoppinglist.fragments;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import pl.rymuszka.shoppinglist.R;
-import pl.rymuszka.shoppinglist.activities.ProductActivity;
 import pl.rymuszka.shoppinglist.database.ProductContract;
 
 /**
@@ -43,16 +44,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         dbCursor.moveToPosition(position);
-
-        long productId = dbCursor.getLong(dbCursor.getColumnIndex(ProductContract.ProductEntry._ID));
-        String productName = dbCursor.getString(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME));
-        double productQuantity = dbCursor.getDouble(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY));
-        String productUnits = dbCursor.getString(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS));
-
-        holder.itemView.setTag(productId);
-        holder.productNameTextView.setText(productName);
-        holder.productQuantityTextView.setText(String.valueOf(productQuantity));
-        holder.productUnitsTextView.setText(productUnits);
+        holder.onBind();
     }
 
     @Override
@@ -91,6 +83,71 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             if(dbCursor.moveToPosition(adapterPosition)) {
                 Bundle bundle = getProductBundle(dbCursor);
                 onClickHandler.onClick(bundle);
+            }
+        }
+
+        public void onBind() {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String fontSize = sharedPreferences.getString(context.getString(R.string.pref_font_size_key),
+                    context.getString(R.string.pref_font_size_default_value));
+            String fontColor = sharedPreferences.getString(context.getString(R.string.pref_font_color_key),
+                    context.getString(R.string.pref_font_color_default_value));
+
+            long productId = dbCursor.getLong(dbCursor.getColumnIndex(ProductContract.ProductEntry._ID));
+            String productName = dbCursor.getString(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME));
+            double productQuantity = dbCursor.getDouble(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY));
+            String productUnits = dbCursor.getString(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS));
+
+            setFontSize(fontSize);
+            setFontColor(fontColor);
+
+            itemView.setTag(productId);
+            productNameTextView.setText(productName);
+            productQuantityTextView.setText(String.valueOf(productQuantity));
+            productUnitsTextView.setText(productUnits);
+        }
+
+        private void setFontSize(String fontSize) {
+            float dimension = context.getResources().getDimension(R.dimen.font_size_default);
+            if(fontSize.equals(context.getString(R.string.pref_font_size_small_value))) {
+                dimension = context.getResources().getDimension(R.dimen.font_size_small);
+            } else if(fontSize.equals(context.getString(R.string.pref_font_size_medium_value))) {
+                dimension = context.getResources().getDimension(R.dimen.font_size_medium);
+            } else if(fontSize.equals(context.getString(R.string.pref_font_size_large_value))) {
+                dimension = context.getResources().getDimension(R.dimen.font_size_large);
+            } else if(fontSize.equals(context.getString(R.string.pref_font_size_very_large_value))) {
+                dimension = context.getResources().getDimension(R.dimen.font_size_very_large);
+            }
+
+            if(productNameTextView != null){
+                productNameTextView.setTextSize(dimension);
+            }
+            if(productQuantityTextView != null) {
+                productQuantityTextView.setTextSize(dimension);
+            }
+            if(productUnitsTextView != null) {
+                productUnitsTextView.setTextSize(dimension);
+            }
+        }
+
+        private void setFontColor(String fontColor) {
+            int color = ContextCompat.getColor(context, R.color.font_color_default);
+            if(fontColor.equals(context.getString(R.string.pref_font_color_red_value))) {
+                color = ContextCompat.getColor(context, R.color.font_color_red);
+            } else if (fontColor.equals(context.getString(R.string.pref_font_color_green_value))) {
+                color = ContextCompat.getColor(context, R.color.font_color_green);
+            } else if (fontColor.equals(context.getString(R.string.pref_font_color_blue_value))) {
+                color = ContextCompat.getColor(context, R.color.font_color_blue);
+            }
+
+            if(productNameTextView != null){
+                productNameTextView.setTextColor(color);
+            }
+            if(productQuantityTextView != null) {
+                productQuantityTextView.setTextColor(color);
+            }
+            if(productUnitsTextView != null) {
+                productUnitsTextView.setTextColor(color);
             }
         }
 
