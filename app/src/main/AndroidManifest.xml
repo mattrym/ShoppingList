@@ -22,8 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ProductActivity" />
-        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity android:name=".activities.ProductActivity"
+            android:parentActivityName=".activities.ShoppingListActivity">
+
+        </activity>
+        <activity android:name=".activities.SettingsActivity"
+            android:parentActivityName=".activities.ShoppingListActivity">
+
+        </activity>
     </application>
 
 </manifest>
