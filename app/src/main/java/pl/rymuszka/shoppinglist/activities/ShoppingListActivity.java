@@ -44,6 +44,12 @@ public class ShoppingListActivity extends AppCompatActivity {
                     .add(R.id.product_list_container, shoppingListFragment).commit();
         }
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -18,7 +18,7 @@ import pl.rymuszka.shoppinglist.database.ProductDatabase;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ShoppingListFragment extends Fragment implements ShoppingListAdapter.ProductItemOnClickHandler {
+public class ShoppingListFragment extends Fragment implements ShoppingListAdapter.ProductItemOnLongClickHandler {
 
     private Cursor allProductsCursor;
     private RecyclerView productList;
@@ -57,8 +57,8 @@ public class ShoppingListFragment extends Fragment implements ShoppingListAdapte
         }
 
         allProductsCursor = productDatabase.selectAllProductsFromDatabase();
-        productAdapter = new ShoppingListAdapter(getActivity(), allProductsCursor);
-        productAdapter.setOnClickHandler(this);
+        productAdapter = new ShoppingListAdapter(getActivity(), allProductsCursor, productList);
+        productAdapter.setOnLongClickHandler(this);
         productList.setAdapter(productAdapter);
     }
 
@@ -79,7 +79,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListAdapte
     }
 
     @Override
-    public void onClick(Bundle bundle) {
+    public void onLongClick(Bundle bundle) {
         Intent intent = new Intent(getContext(), ProductActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);

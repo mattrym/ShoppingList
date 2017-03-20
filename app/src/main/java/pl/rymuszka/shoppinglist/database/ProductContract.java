@@ -18,6 +18,7 @@ public class ProductContract {
         public static final String TABLE_NAME = "products";
 
         public static final String COLUMN_PRODUCT_NAME = "name";
+        public static final String COLUMN_PRODUCT_CATEGORY =  "category";
         public static final String COLUMN_PRODUCT_QUANTITY = "quantity";
         public static final String COLUMN_PRODUCT_UNITS = "units";
 

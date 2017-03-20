@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.transition.TransitionManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,13 +22,16 @@ import pl.rymuszka.shoppinglist.database.ProductContract;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ProductViewHolder> {
 
+    private final RecyclerView recyclerView;
+    private int expandedPosition = -1;
     private Context context;
     private Cursor dbCursor;
-    private ProductItemOnClickHandler onClickHandler;
+    private ProductItemOnLongClickHandler onLongClickHandler;
 
-    public ShoppingListAdapter(Context context, Cursor dbCursor) {
+    public ShoppingListAdapter(Context context, Cursor dbCursor, RecyclerView recyclerView) {
         this.context = context;
         this.dbCursor = dbCursor;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -42,8 +46,23 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     }
 
     @Override
-    public void onBindViewHolder(ProductViewHolder holder, int position) {
+    public void onBindViewHolder(ProductViewHolder holder, final int position) {
         dbCursor.moveToPosition(position);
+
+        final boolean isExpanded = position == expandedPosition;
+        holder.productQuantityTextView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        holder.productUnitsTextView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        holder.itemView.setActivated(isExpanded);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandedPosition = isExpanded ? -1 : position;
+                TransitionManager.beginDelayedTransition(recyclerView);
+                notifyDataSetChanged();
+            }
+        });
+
+
         holder.onBind();
     }
 
@@ -52,15 +71,15 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         return dbCursor.getCount();
     }
 
-    public interface ProductItemOnClickHandler {
-        void onClick(Bundle bundle);
+    public interface ProductItemOnLongClickHandler {
+        void onLongClick(Bundle bundle);
     }
 
-    public void setOnClickHandler(ProductItemOnClickHandler onClickHandler) {
-        this.onClickHandler = onClickHandler;
+    public void setOnLongClickHandler(ProductItemOnLongClickHandler onLongClickHandler) {
+        this.onLongClickHandler = onLongClickHandler;
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
         private TextView productNameTextView;
         private TextView productQuantityTextView;
@@ -73,17 +92,19 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             productQuantityTextView = (TextView) itemView.findViewById(R.id.tv_product_quantity);
             productUnitsTextView = (TextView) itemView.findViewById(R.id.tv_product_units);
 
-            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
-        public void onClick(View v) {
+        public boolean onLongClick(View v) {
             int adapterPosition = getAdapterPosition();
 
             if(dbCursor.moveToPosition(adapterPosition)) {
                 Bundle bundle = getProductBundle(dbCursor);
-                onClickHandler.onClick(bundle);
+                onLongClickHandler.onLongClick(bundle);
+                return true;
             }
+            return false;
         }
 
         public void onBind() {

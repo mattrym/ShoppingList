@@ -4,12 +4,26 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+
+    <color name="selected_product_item_background">#EFEFEF</color>
+    <color name="product_item_background">#FFFFFF</color>
+
     <color name="splash_background">#888888</color>
 
     <!-- Font colors available from settings -->
     <color name="font_color_default">@color/font_color_blue</color>
+
+    <!-- Color theme RED -->
+    <color name="action_bar_color_red">#FF0000</color>
     <color name="font_color_red">#FF0000</color>
+
+    <!-- Color theme GREEN -->
+    <color name="action_bar_color_green">#00FF00</color>
     <color name="font_color_green">#00FF00</color>
+
+    <!-- Color theme BLUE -->
+    <color name="action_bar_color_blue">#0000FF</color>
     <color name="font_color_blue">#0000FF</color>
+
 
 </resources>

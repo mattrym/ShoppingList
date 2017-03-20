@@ -15,6 +15,7 @@ import android.os.Parcelable;
 public class ProductDatabase {
 
     private static ProductDatabase productDatabase;
+    private final ProductDBHelper productDatabaseHelper;
 
     public static ProductDatabase getInstance(Context context) {
         if(productDatabase == null) {
@@ -26,7 +27,8 @@ public class ProductDatabase {
     private SQLiteDatabase sqliteDatabase;
 
     private ProductDatabase(Context context) {
-        sqliteDatabase = new ProductDBHelper(context).getWritableDatabase();
+        productDatabaseHelper = new ProductDBHelper(context);
+        sqliteDatabase = productDatabaseHelper.getWritableDatabase();
         ProductTestUtility.insertSampleData(sqliteDatabase);
     }
 
@@ -87,5 +89,11 @@ public class ProductDatabase {
                 null,
                 null,
                 ProductContract.ProductEntry.COLUMN_TIMESTAMP);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        productDatabaseHelper.close();
+        super.finalize();
     }
 }
