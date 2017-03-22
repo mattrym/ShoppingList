@@ -32,12 +32,13 @@ public class ProductDatabase {
         ProductTestUtility.insertSampleData(sqliteDatabase);
     }
 
-    public boolean addNewProduct(String productName, double productQuantity, String productUnits) {
+    public boolean addNewProduct(String productName, double productQuantity, String productUnits, int productCategory) {
         ContentValues values = new ContentValues();
 
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME, productName);
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS, productUnits);
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY, productCategory);
 
         return sqliteDatabase.insert(ProductContract.ProductEntry.TABLE_NAME,
                 null, values) > 0;
@@ -48,7 +49,8 @@ public class ProductDatabase {
                 ProductContract.ProductEntry._ID,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
-                ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS
+                ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS,
+                ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY
         };
 
         return sqliteDatabase.query(ProductContract.ProductEntry.TABLE_NAME,
@@ -60,12 +62,13 @@ public class ProductDatabase {
                 null);
     }
 
-    public boolean updateProduct(long productId, String productName, double productQuantity, String productUnits) {
+    public boolean updateProduct(long productId, String productName, double productQuantity, String productUnits, int productCategory) {
         ContentValues cv = new ContentValues();
         cv.put(ProductContract.ProductEntry._ID, productId);
         cv.put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME, productName);
         cv.put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
         cv.put(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS, productUnits);
+        cv.put(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY, productCategory);
 
         String updateWhereClause = ProductContract.ProductEntry._ID + "=" + productId;
 
@@ -91,9 +94,9 @@ public class ProductDatabase {
                 ProductContract.ProductEntry.COLUMN_TIMESTAMP);
     }
 
-    @Override
-    protected void finalize() throws Throwable {
+    public void close() {
         productDatabaseHelper.close();
-        super.finalize();
+        productDatabase.close();
+        productDatabase = null;
     }
 }

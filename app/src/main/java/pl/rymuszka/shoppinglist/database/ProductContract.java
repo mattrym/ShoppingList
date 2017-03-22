@@ -8,6 +8,13 @@ import android.provider.BaseColumns;
 
 public class ProductContract {
 
+    public static final class ProductCategory {
+        public static final int FRUIT_VEGETABLES = 0;
+        public static final int DAIRY_PRODUCTS = 1;
+        public static final int BAKED_GOODS = 2;
+        public static final int DRINKS = 3;
+    }
+
     private ProductContract() {
     }
 

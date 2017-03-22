@@ -7,6 +7,12 @@
     <string name="quantity_label">QUANTITY</string>
     <string name="product_label">PRODUCT NAME</string>
 
+    <!-- Category names -->
+    <string name="category_fruit_vegetables">Fruit and vegetables</string>
+    <string name="category_dairy_products">Dairy products</string>
+    <string name="category_baked_goods">Baked goods</string>
+    <string name="category_drinks">Drinks</string>
+
     <string name="save_product_button">Save product</string>
 
     <!-- Labels of ListPreferences -->

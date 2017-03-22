@@ -3,14 +3,23 @@ package pl.rymuszka.shoppinglist.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.transition.ChangeBounds;
+import android.support.transition.Scene;
+import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
+import android.support.transition.TransitionValues;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import pl.rymuszka.shoppinglist.R;
@@ -46,24 +55,38 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     }
 
     @Override
-    public void onBindViewHolder(ProductViewHolder holder, final int position) {
+    public void onBindViewHolder(final ProductViewHolder holder, final int position) {
         dbCursor.moveToPosition(position);
 
         final boolean isExpanded = position == expandedPosition;
+
+        if(isExpanded){
+            holder.itemView.setBackground(context.getDrawable(R.drawable.selected_product_item_background));
+        } else {
+            holder.itemView.setBackground(context.getDrawable(R.drawable.product_item_background));
+        }
+        holder.productCategoryImageView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.productQuantityTextView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.productUnitsTextView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
+
         holder.itemView.setActivated(isExpanded);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 expandedPosition = isExpanded ? -1 : position;
-                TransitionManager.beginDelayedTransition(recyclerView);
+
                 notifyDataSetChanged();
             }
         });
 
-
         holder.onBind();
+
+    }
+
+    @Override
+    public void onViewRecycled(ProductViewHolder holder) {
+        holder.itemView.setOnClickListener(null);
     }
 
     @Override
@@ -84,6 +107,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         private TextView productNameTextView;
         private TextView productQuantityTextView;
         private TextView productUnitsTextView;
+        private ImageView productCategoryImageView;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
@@ -91,8 +115,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             productNameTextView = (TextView) itemView.findViewById(R.id.tv_product_name);
             productQuantityTextView = (TextView) itemView.findViewById(R.id.tv_product_quantity);
             productUnitsTextView = (TextView) itemView.findViewById(R.id.tv_product_units);
+            productCategoryImageView = (ImageView) itemView.findViewById(R.id.iv_product_category);
 
             itemView.setOnLongClickListener(this);
+
         }
 
         @Override
@@ -118,6 +144,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             String productName = dbCursor.getString(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME));
             double productQuantity = dbCursor.getDouble(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY));
             String productUnits = dbCursor.getString(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS));
+            int productCategory = dbCursor.getInt(dbCursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY));
 
             setFontSize(fontSize);
             setFontColor(fontColor);
@@ -126,6 +153,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             productNameTextView.setText(productName);
             productQuantityTextView.setText(String.valueOf(productQuantity));
             productUnitsTextView.setText(productUnits);
+            setCategoryIcon(productCategory);
         }
 
         private void setFontSize(String fontSize) {
@@ -170,6 +198,25 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             if(productUnitsTextView != null) {
                 productUnitsTextView.setTextColor(color);
             }
+        }
+
+        private void setCategoryIcon(int category) {
+            Drawable categoryIcon = null;
+            switch (category) {
+                case ProductContract.ProductCategory.FRUIT_VEGETABLES:
+                    categoryIcon = ContextCompat.getDrawable(context, R.drawable.category_fruit_vegetables);
+                    break;
+                case ProductContract.ProductCategory.BAKED_GOODS:
+                    categoryIcon = ContextCompat.getDrawable(context, R.drawable.category_baked_goods);
+                    break;
+                case ProductContract.ProductCategory.DAIRY_PRODUCTS:
+                    categoryIcon = ContextCompat.getDrawable(context, R.drawable.category_dairy_products);
+                    break;
+                case ProductContract.ProductCategory.DRINKS:
+                    categoryIcon = ContextCompat.getDrawable(context, R.drawable.category_drinks);
+                    break;
+            }
+            productCategoryImageView.setImageDrawable(categoryIcon);
         }
 
         private Bundle getProductBundle(Cursor cursor) {

@@ -7,5 +7,5 @@
     <dimen name="font_size_medium">6sp</dimen>
     <dimen name="font_size_large">8sp</dimen>
     <dimen name="font_size_very_large">10sp</dimen>
-    <dimen name="z_card">20dp</dimen>
+    <dimen name="z_card">0dp</dimen>
 </resources>

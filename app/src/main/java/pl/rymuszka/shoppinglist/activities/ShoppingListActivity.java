@@ -43,8 +43,6 @@ public class ShoppingListActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.product_list_container, shoppingListFragment).commit();
         }
-
-
     }
 
     @Override

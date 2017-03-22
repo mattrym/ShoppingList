@@ -15,7 +15,7 @@ public final class ProductTestUtility {
             return;
         }
 
-        ContentValues[] contentValues = new ContentValues[5];
+        ContentValues[] contentValues = new ContentValues[6];
         for(int i = 0; i < contentValues.length; ++i) {
             contentValues[i] = new ContentValues();
         }
@@ -23,22 +23,32 @@ public final class ProductTestUtility {
         contentValues[0].put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME, "Pomidory");
         contentValues[0].put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 1.5);
         contentValues[0].put(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS, "kg");
+        contentValues[0].put(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY,
+                ProductContract.ProductCategory.FRUIT_VEGETABLES);
 
         contentValues[1].put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME, "Masło");
         contentValues[1].put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 200);
         contentValues[1].put(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS, "g");
+        contentValues[1].put(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY,
+                ProductContract.ProductCategory.DAIRY_PRODUCTS);
 
         contentValues[2].put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME, "Ser");
         contentValues[2].put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 15);
         contentValues[2].put(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS, "dag");
+        contentValues[2].put(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY,
+                ProductContract.ProductCategory.DAIRY_PRODUCTS);
 
         contentValues[3].put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME, "Woda");
         contentValues[3].put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 1.5);
         contentValues[3].put(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS, "l");
+        contentValues[3].put(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY,
+                ProductContract.ProductCategory.DRINKS);
 
         contentValues[4].put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME, "Bułki");
         contentValues[4].put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 6);
         contentValues[4].put(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS, "szt.");
+        contentValues[4].put(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY,
+                ProductContract.ProductCategory.BAKED_GOODS);
 
         try {
             database.beginTransaction();

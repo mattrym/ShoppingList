@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@drawable/product_item_background"
-    android:stateListAnimator="@animator/product_item_selection"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:paddingTop="16dp"
     android:paddingBottom="16dp">
+
+    <ImageView style="@style/AppTheme.ProductItemStyle"
+        android:id="@+id/iv_product_category"
+        android:layout_height="match_parent"
+        android:paddingRight="10dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView style="@style/AppTheme.ProductItemStyle"
-            android:id="@+id/tv_product_name" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Space
-            android:layout_weight="1"
-            android:layout_gravity="right"
-            android:layout_width="0sp"
-            android:layout_height="match_parent" />
-        <TextView style="@style/AppTheme.ProductItemStyle"
-            android:layout_gravity="right"
-            android:paddingRight="0dp"
-            android:id="@+id/tv_product_quantity" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView style="@style/AppTheme.ProductItemStyle"
-            android:layout_gravity="right"
-            android:paddingLeft="0dp"
-            android:id="@+id/tv_product_units" />
+            <TextView
+                android:id="@+id/tv_product_name"
+                style="@style/AppTheme.ProductItemStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Space
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_product_quantity"
+                style="@style/AppTheme.ProductItemStyle"
+                android:layout_gravity="right"
+                android:paddingRight="0dp" />
+
+            <TextView
+                android:id="@+id/tv_product_units"
+                style="@style/AppTheme.ProductItemStyle"
+                android:layout_gravity="right"
+                android:paddingLeft="0dp" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <array name="product_categories">
+        <item>@string/category_fruit_vegetables</item>
+        <item>@string/category_dairy_products</item>
+        <item>@string/category_baked_goods</item>
+        <item>@string/category_drinks</item>
+    </array>
     <array name="pref_font_size_labels">
         <item>@string/pref_font_size_small_label</item>
         <item>@string/pref_font_size_medium_label</item>

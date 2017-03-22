@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -35,7 +36,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListAdapte
 
         productList = (RecyclerView) view.findViewById(R.id.rv_product_list);
         productList.setLayoutManager(new LinearLayoutManager(getContext()));
-        productList.setHasFixedSize(false);
+        //productList.setHasFixedSize(true);
 
         productDatabase = ProductDatabase.getInstance(getContext());
 
@@ -50,6 +51,12 @@ public class ShoppingListFragment extends Fragment implements ShoppingListAdapte
         super.onResume();
         attachProductAdapter();
     }
+
+//    @Override
+//    public void onDestroyView() {
+//        ProductDatabase.getInstance(getContext()).close();
+//        super.onDestroyView();
+//    }
 
     private void attachProductAdapter() {
         if(allProductsCursor != null) {

@@ -2,10 +2,13 @@ package pl.rymuszka.shoppinglist.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
@@ -20,25 +23,36 @@ public class ProductActivity extends AppCompatActivity {
     private String productName;
     private double productQuantity;
     private String productUnits;
+    private int productCategory;
 
     private EditText productNameEditText;
     private EditText productQuantityEditText;
     private EditText productUnitsEditText;
+    private Spinner productCategorySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-        productId = -1;
         productNameEditText = (EditText) findViewById(R.id.et_product_name);
         productQuantityEditText = (EditText) findViewById(R.id.et_product_quantity);
         productUnitsEditText = (EditText) findViewById(R.id.et_product_units);
+        productCategorySpinner = (Spinner) findViewById(R.id.spinner_product_category);
+        initializeSpinner();
 
+        productId = -1;
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             getDataFromBundle(bundle);
         }
+    }
+
+    protected void initializeSpinner() {
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this,
+                R.array.product_categories, android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        productCategorySpinner.setAdapter(arrayAdapter);
     }
 
     public void saveProductInfo(View view) {
@@ -50,14 +64,17 @@ public class ProductActivity extends AppCompatActivity {
         }
 
         ProductDatabase database = ProductDatabase.getInstance(this);
-        getDataFromEditViews();
+        if(!getDataFromEditViews()) {
+            Toast.makeText(this, "Fill in all the fields properly!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (productId >= 0){
-            if(database.updateProduct(productId, productName, productQuantity, productUnits)) {
+            if(database.updateProduct(productId, productName, productQuantity, productUnits, productCategory)) {
                 finish();
             }
         } else {
-            if(database.addNewProduct(productName, productQuantity, productUnits)) {
+            if(database.addNewProduct(productName, productQuantity, productUnits, productCategory)) {
                 finish();
             }
         }
@@ -68,15 +85,24 @@ public class ProductActivity extends AppCompatActivity {
         productName = bundle.getString(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME);
         productQuantity = bundle.getDouble(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
         productUnits = bundle.getString(ProductContract.ProductEntry.COLUMN_PRODUCT_UNITS);
+        productCategory = bundle.getInt(ProductContract.ProductEntry.COLUMN_PRODUCT_CATEGORY);
 
         productNameEditText.setText(productName);
         productQuantityEditText.setText(Double.toString(productQuantity));
         productUnitsEditText.setText(productUnits);
+        productCategorySpinner.setSelection(productCategory);
     }
 
-    private void getDataFromEditViews() {
-        productName = productNameEditText.getText().toString();
-        productQuantity = Double.parseDouble(productQuantityEditText.getText().toString());
-        productUnits = productUnitsEditText.getText().toString();
+    private boolean getDataFromEditViews() {
+        try {
+            productName = productNameEditText.getText().toString();
+            productQuantity = Double.parseDouble(productQuantityEditText.getText().toString());
+            productUnits = productUnitsEditText.getText().toString();
+            productCategory = productCategorySpinner.getSelectedItemPosition();
+        }
+        catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 }
